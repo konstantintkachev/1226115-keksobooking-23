@@ -11,6 +11,10 @@ const DESCRIPTION = ['Рай в шалаше', 'Кошкин дом', 'Избу�
 const PHOTOS = ['https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/duonguyen-8LrGtIxxa4w.jpg',
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg',
   'http://o0.github.io/assets/https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg/tokyo/hotel3.jpg'];
+const CREATE_DATA = 10;
+const ANY_NUMBER_FIRST = 1;
+const ANY_NUMBER_SECOND = 8;
+const MAX_PRICE = 50000;
 
 const getRandomNumber = (min, max) => {
   if (min >= max) {
@@ -35,7 +39,7 @@ const LNG_Y =  getRandomLocation(LOCATION_Y_FIRST, LOCATION_Y_SECOND, 5);
 
 const createRandomValues = () => ({
   author: {
-    avatar: `img/avatars/user0${getRandomNumber(1, 8)}.png`,
+    avatar: `img/avatars/user0${getRandomNumber(ANY_NUMBER_FIRST, ANY_NUMBER_SECOND)}.png`,
   },
   offer: {
     title: getRandomArrayElement(TITLE),
@@ -43,10 +47,10 @@ const createRandomValues = () => ({
       lat: LAT_X,
       lng: LNG_Y,
     },
-    price: getRandomNumber(1, 50000),
+    price: getRandomNumber(ANY_NUMBER_FIRST, MAX_PRICE),
     type: getRandomArrayElement(TYPE),
-    rooms: getRandomNumber(1, 5),
-    guests: getRandomNumber(1, 7),
+    rooms: getRandomNumber(ANY_NUMBER_FIRST, ANY_NUMBER_SECOND),
+    guests: getRandomNumber(ANY_NUMBER_FIRST, ANY_NUMBER_SECOND),
     checkin: getRandomArrayElement(CHECKIN),
     checkout: getRandomArrayElement(CHECKOUT),
     features: getRandomArrayElement(FEATURES),
@@ -59,6 +63,6 @@ const createRandomValues = () => ({
   },
 });
 
-const similarArr = new Array(10).fill('').map(() => createRandomValues());
+const similarArr = new Array(CREATE_DATA).fill('').map(() => createRandomValues());
 // eslint-disable-next-line no-console
 console.log(similarArr);
