@@ -32,20 +32,22 @@ const getRandomLocation = (min, max, number) => {
   return (Math.random() * (max - min) + min).toFixed(number);
 };
 
+let imageCount = 1;
+
 const getRandomArrayElement = (elements) => elements[getRandomNumber(0, elements.length - 1)];
 
-const LAT_X = getRandomLocation(LOCATION_X_FIRST, LOCATION_X_SECOND, 5);
-const LNG_Y =  getRandomLocation(LOCATION_Y_FIRST, LOCATION_Y_SECOND, 5);
+const latX = getRandomLocation(LOCATION_X_FIRST, LOCATION_X_SECOND, 5);
+const lngY =  getRandomLocation(LOCATION_Y_FIRST, LOCATION_Y_SECOND, 5);
 
 const createRandomValues = () => ({
   author: {
-    avatar: `img/avatars/user0${getRandomNumber(ANY_NUMBER_FIRST, ANY_NUMBER_SECOND)}.png`,
+    avatar: `img/avatars/user0${imageCount++}.png`,
   },
   offer: {
     title: getRandomArrayElement(TITLE),
     address: {
-      lat: LAT_X,
-      lng: LNG_Y,
+      lat: latX,
+      lng: lngY,
     },
     price: getRandomNumber(ANY_NUMBER_FIRST, MAX_PRICE),
     type: getRandomArrayElement(TYPE),
@@ -58,8 +60,8 @@ const createRandomValues = () => ({
     photos: getRandomArrayElement(PHOTOS),
   },
   location: {
-    lat: LAT_X,
-    lng: LNG_Y,
+    lat: latX,
+    lng: lngY,
   },
 });
 
