@@ -48,5 +48,5 @@ const createRandomValues = () => ({
 });
 
 const similarArr = new Array(CREATE_DATA).fill('').map(() => createRandomValues());
-// eslint-disable-next-line no-console
-console.log(similarArr);
+
+export {similarArr, FEATURES};
