@@ -1,4 +1,4 @@
-import {similarArr, FEATURES} from './data.js';
+import {similarArr, FEATURES, PHOTOS} from './data.js';
 
 const mapCanvas = document.querySelector('.map__canvas');
 const templateCard = document.querySelector('#card')
@@ -59,8 +59,10 @@ const createCards = (element) => {
   }
 
   const popupPhotos = elementCards.querySelector('.popup__photos');
-  const parentElement = popupPhotos.children;
-  parentElement[0].src = element.offer.photos;
+  popupPhotos.innerHTML = '';
+  PHOTOS.forEach((item) => {
+    popupPhotos.innerHTML += `<img src="${item}" class="popup__photo" width="45" height="40" alt="Фотография жилья">`;
+  });
   if (!element.offer.photos) {
     popupPhotos.remove();
   }

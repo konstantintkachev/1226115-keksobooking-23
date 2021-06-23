@@ -11,7 +11,7 @@ const FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'condit
 const DESCRIPTION = ['Рай в шалаше', 'Кошкин дом', 'Избушка на ножках', 'Теремок'];
 const PHOTOS = ['https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/duonguyen-8LrGtIxxa4w.jpg',
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg',
-  'http://o0.github.io/assets/https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg/tokyo/hotel3.jpg'];
+  'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg'];
 const CREATE_DATA = 10;
 const ANY_NUMBER_FIRST = 1;
 const ANY_NUMBER_SECOND = 8;
@@ -49,4 +49,4 @@ const createRandomValues = () => ({
 
 const similarArr = new Array(CREATE_DATA).fill('').map(() => createRandomValues());
 
-export {similarArr, FEATURES};
+export {similarArr, FEATURES, PHOTOS};
