@@ -3,6 +3,19 @@ const adForm = noticeForm.querySelector('.ad-form');
 const fieldsetForm = adForm.querySelectorAll('fieldset');
 const mapFiltersForm = document.querySelector('.map__filters');
 const selectForm = mapFiltersForm.querySelectorAll('select');
+const priceForm = adForm.querySelector('#price');
+const roomNumber = document.querySelector('#room_number');
+const guestNumber = document.querySelector('#capacity');
+
+const MIN_NAME_LENGTH = 30;
+const MAX_NAME_LENGTH = 100;
+
+const numberOfRooms = {
+  1: ['для 1 гостя'],
+  2: ['для 2 гостей', 'для 1 гостя'],
+  3: ['для 3 гостей', 'для 2 гостей', 'для 1 гостя'],
+  100: ['не для гостей'],
+};
 
 const addDisabled = (element, bool) => {
   // eslint-disable-next-line id-length
@@ -27,9 +40,6 @@ const makeActiveForm = () => {
 };
 makeActiveForm();
 
-const MIN_NAME_LENGTH = 30;
-const MAX_NAME_LENGTH = 100;
-
 const titleForm = adForm.querySelector('#title');
 titleForm.addEventListener('input', () => {
   const valueLength = titleForm.value.length;
@@ -43,17 +53,7 @@ titleForm.addEventListener('input', () => {
   titleForm.reportValidity();
 });
 
-const priceForm = adForm.querySelector('#price');
 priceForm.setAttribute('max', 1000000);
-
-const numberOfRooms = {
-  1: ['для 1 гостя'],
-  2: ['для 2 гостей', 'для 1 гостя'],
-  3: ['для 3 гостей', 'для 2 гостей', 'для 1 гостя'],
-  100: ['не для гостей'],
-};
-const roomNumber = document.querySelector('#room_number');
-const guestNumber = document.querySelector('#capacity');
 
 const defaultOptions = [...guestNumber.options];
 roomNumber.addEventListener('change', function () {
