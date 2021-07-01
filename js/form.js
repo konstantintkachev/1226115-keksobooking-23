@@ -3,19 +3,36 @@ const adForm = noticeForm.querySelector('.ad-form');
 const fieldsetForm = adForm.querySelectorAll('fieldset');
 const mapFiltersForm = document.querySelector('.map__filters');
 const selectForm = mapFiltersForm.querySelectorAll('select');
-const priceForm = adForm.querySelector('#price');
+const priceForm = document.querySelector('#price');
+const typeForm = document.querySelector('#type');
 const roomNumber = document.querySelector('#room_number');
 const guestNumber = document.querySelector('#capacity');
+const checkIn = document.querySelector('#timein');
+const checkOut = document.querySelector('#timeout');
 
 const MIN_NAME_LENGTH = 30;
 const MAX_NAME_LENGTH = 100;
 
 const numberOfRooms = {
-  1: ['для 1 гостя'],
-  2: ['для 2 гостей', 'для 1 гостя'],
-  3: ['для 3 гостей', 'для 2 гостей', 'для 1 гостя'],
-  100: ['не для гостей'],
+  1: ['1'],
+  2: ['2', '1'],
+  3: ['3', '2', '1'],
+  100: ['0'],
 };
+
+const typeMinPrice = {
+  'bungalow': 0,
+  'flat': 1000,
+  'hotel': 3000,
+  'house': 5000,
+  'palace': 10000,
+};
+
+typeForm.addEventListener('change', (evt) => {
+  evt.target.value === typeForm.value;
+  priceForm.placeholder = typeMinPrice[typeForm.value];
+  priceForm.min = typeMinPrice[typeForm.value];
+});
 
 const addDisabled = (element, bool) => {
   // eslint-disable-next-line id-length
@@ -53,8 +70,6 @@ titleForm.addEventListener('input', () => {
   titleForm.reportValidity();
 });
 
-priceForm.setAttribute('max', 1000000);
-
 const defaultOptions = [...guestNumber.options];
 roomNumber.addEventListener('change', function () {
   const selectedOption = this.options[this.selectedIndex];
@@ -86,4 +101,16 @@ roomNumber.addEventListener('change', (event) => {
     roomNumber.setCustomValidity('Количество комнат должно соответствовать количеству людей или меньше');
   }
   roomNumber.reportValidity();
+});
+
+const makeSameValue = function (first, second) {
+  first.value = second.value;
+};
+
+checkIn.addEventListener('change', () => {
+  makeSameValue(checkOut, checkIn);
+});
+
+checkOut.addEventListener('change', () => {
+  makeSameValue(checkIn, checkOut);
 });
