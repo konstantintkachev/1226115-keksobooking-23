@@ -16,4 +16,7 @@ const getRandomLocation = (min, max, number) => {
 
 const getRandomArrayElement = (elements) => elements[getRandomNumber(0, elements.length - 1)];
 
-export {getRandomNumber, getRandomLocation, getRandomArrayElement};
+// eslint-disable-next-line id-length
+const getNumber = (n) => (n < 10) ? (`0${n}`) : n;
+
+export {getRandomNumber, getRandomLocation, getRandomArrayElement, getNumber};

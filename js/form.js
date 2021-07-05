@@ -55,7 +55,6 @@ const makeActiveForm = () => {
   mapFiltersForm.classList.remove('ad-form--disabled');
   addDisabled(selectForm, false);
 };
-makeActiveForm();
 
 const titleForm = adForm.querySelector('#title');
 titleForm.addEventListener('input', () => {
@@ -114,3 +113,5 @@ checkIn.addEventListener('change', () => {
 checkOut.addEventListener('change', () => {
   makeSameValue(checkIn, checkOut);
 });
+
+export {makeActiveForm};
