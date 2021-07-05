@@ -1,6 +1,5 @@
 import {similarArr, FEATURES, PHOTOS} from './data.js';
-
-const mapCanvas = document.querySelector('.map__canvas');
+// const mapCanvas = document.querySelector('.map__canvas');
 const templateCard = document.querySelector('#card')
   .content
   .querySelector('.popup');
@@ -74,5 +73,5 @@ const createCards = (element) => {
   }
   return elementCards;
 };
-// eslint-disable-next-line no-console
-mapCanvas.appendChild(createCards(renderCards[0]));
+
+export {renderCards, createCards};

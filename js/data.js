@@ -1,4 +1,4 @@
-import {getRandomNumber, getRandomLocation, getRandomArrayElement} from './until.js';
+import {getRandomNumber, getRandomLocation, getRandomArrayElement, getNumber} from './until.js';
 const TITLE = ['Домик в деревне', 'Набережная мойки', 'Вилла в Шерегеше', 'Особняк на Рублевке'];
 const LOCATION_X_FIRST = 35.65000;
 const LOCATION_X_SECOND = 35.70000;
@@ -16,14 +16,13 @@ const CREATE_DATA = 10;
 const ANY_NUMBER_FIRST = 1;
 const ANY_NUMBER_SECOND = 8;
 const MAX_PRICE = 50000;
-let imageCount = 1;
 
 const latX = getRandomLocation(LOCATION_X_FIRST, LOCATION_X_SECOND, 5);
 const lngY =  getRandomLocation(LOCATION_Y_FIRST, LOCATION_Y_SECOND, 5);
 
 const createRandomValues = () => ({
   author: {
-    avatar: `img/avatars/user0${imageCount++}.png`,
+    avatar: `img/avatars/user${getNumber(getRandomNumber(1, 11))}.png`,
   },
   offer: {
     title: getRandomArrayElement(TITLE),
