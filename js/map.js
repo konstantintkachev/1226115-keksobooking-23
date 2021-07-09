@@ -6,6 +6,8 @@ import {getData} from './api.js';
 
 const LAT = 35.660940;
 const LNG = 139.778745;
+const address = document.querySelector('#address');
+const SIMILAR_ADVERTS_COUNT = 10;
 
 const map = L.map('map-canvas')
   .on('load', () => {
@@ -41,9 +43,14 @@ const mainPinMarker = L.marker(
   },
 );
 mainPinMarker.addTo(map);
+address.value = `${LAT}, ${LNG}`;
+
+let data = [];
 
 getData((adverts) => {
-  adverts.forEach((element) => {
+  data = [...adverts];
+  const copyData = data.slice(0, SIMILAR_ADVERTS_COUNT);
+  copyData.forEach((element) => {
     const iconPin = L.icon(
       {
         iconUrl: '../img/pin.svg',
@@ -53,8 +60,8 @@ getData((adverts) => {
     );
     const markerPin =  L.marker(
       {
-        lat: element.offer.address.lat,
-        lng: element.offer.address.lng,
+        lat: element.location.lat,
+        lng: element.location.lng,
       },
       {
         icon: iconPin,
@@ -66,13 +73,11 @@ getData((adverts) => {
   });
 });
 
-
 mainPinMarker.on('moveend', (evt) => {
   const mooveMarket = evt.target.getLatLng();
   const lat = mooveMarket.lat.toFixed(5);
   const lng = mooveMarket.lng.toFixed(5);
-  // eslint-disable-next-line no-undef
   address.value = `${lat}, ${lng}`;
 });
 
-export {mainPinMarker, LAT, LNG, map};
+export {mainPinMarker, LAT, LNG};

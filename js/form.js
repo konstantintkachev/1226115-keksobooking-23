@@ -74,6 +74,7 @@ titleForm.addEventListener('input', () => {
 });
 
 const defaultOptions = [...guestNumber.options];
+
 roomNumber.addEventListener('change', function () {
   const selectedOption = this.options[this.selectedIndex];
   guestNumber.innerHTML = '';
@@ -141,7 +142,9 @@ const successMessage = () => {
 
 const resetFunction = () => {
   adForm.reset();
-  mainPinMarker.setLatLng({lat: LAT, lng: LNG});
+  adForm.addEventListener('reset', () => {
+    mainPinMarker.setLatLng({lat: LAT, lng: LNG});
+  });
 };
 
 const resetButtonAdForm = adForm.querySelector('.ad-form__reset');
@@ -181,10 +184,11 @@ const setUserFormSubmit = (onSuccess, onFail) => {
     sendData(
       () => onSuccess(resetFunction()),
       () => onFail(),
-      new FormData(evt.target),
+      new FormData(adForm),
     );
   });
 };
+
 setUserFormSubmit(successMessage, errorMessage);
 
-export {makeActiveForm, setUserFormSubmit};
+export {makeActiveForm};

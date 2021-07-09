@@ -1,10 +1,15 @@
 import {showAlert} from './until.js';
 
-const URL = 'https://23.javascript.pages.academy/keksobooking/data';
+const GET_URL = 'https://23.javascript.pages.academy/keksobooking/data';
+const SEND_URL = 'https://23.javascript.pages.academy/keksobooking';
 
 const getData = (onSuccess) => {
-  fetch(URL)
-    .then((response) => response.json())
+  fetch(GET_URL)
+    .then((response) => {
+      if(response.ok) {
+        return response.json();
+      }
+    })
     .then((adverts) => {
       onSuccess(adverts);
     })
@@ -14,7 +19,7 @@ const getData = (onSuccess) => {
 };
 
 const sendData = (onSuccess, onFail, body) => {
-  fetch(URL,
+  fetch(SEND_URL,
     {
       method: 'POST',
       body,
