@@ -1,3 +1,6 @@
+import {sendData} from './api.js';
+import {mainPinMarker, LAT, LNG} from './map.js';
+
 const noticeForm = document.querySelector('.notice');
 const adForm = noticeForm.querySelector('.ad-form');
 const fieldsetForm = adForm.querySelectorAll('fieldset');
@@ -9,6 +12,7 @@ const roomNumber = document.querySelector('#room_number');
 const guestNumber = document.querySelector('#capacity');
 const checkIn = document.querySelector('#timein');
 const checkOut = document.querySelector('#timeout');
+const body = document.querySelector('body');
 
 const MIN_NAME_LENGTH = 30;
 const MAX_NAME_LENGTH = 100;
@@ -114,4 +118,73 @@ checkOut.addEventListener('change', () => {
   makeSameValue(checkIn, checkOut);
 });
 
-export {makeActiveForm};
+const isEscEvent = (evt) => evt.key === 'Escape' || evt.key === 'Esc';
+
+const templateSuccess = document.querySelector('#success')
+  .content
+  .querySelector('.success');
+
+const successMessage = () => {
+  const elementCards = templateSuccess.cloneNode(true);
+  body.insertBefore(elementCards, null);
+
+  document.addEventListener('click', () => {
+    elementCards.remove();
+  });
+
+  document.addEventListener('keydown', () => {
+    if (isEscEvent) {
+      elementCards.remove();
+    }
+  });
+};
+
+const resetFunction = () => {
+  adForm.reset();
+  mainPinMarker.setLatLng({lat: LAT, lng: LNG});
+};
+
+const resetButtonAdForm = adForm.querySelector('.ad-form__reset');
+resetButtonAdForm.addEventListener('click', () => {
+  resetFunction();
+});
+
+const templateError = document.querySelector('#error')
+  .content
+  .querySelector('.error');
+
+const errorMessage = () => {
+  const elementCards = templateError.cloneNode(true);
+  body.insertBefore(elementCards, null);
+  const errorButton = elementCards.querySelector('.error__button');
+
+  errorButton.addEventListener('click', () => {
+    elementCards.remove();
+  });
+
+  document.addEventListener('keydown', () => {
+    if (isEscEvent) {
+      elementCards.remove();
+    }
+  });
+
+  document.addEventListener('click', () => {
+    elementCards.remove();
+  });
+
+};
+
+const setUserFormSubmit = (onSuccess, onFail) => {
+  adForm.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+
+    sendData(
+      () => onSuccess(resetFunction()),
+      () => onFail(),
+      new FormData(evt.target),
+    );
+  });
+};
+setUserFormSubmit(successMessage, errorMessage);
+
+export {makeActiveForm, setUserFormSubmit};

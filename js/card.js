@@ -1,5 +1,4 @@
 import {similarArr, FEATURES, PHOTOS} from './data.js';
-// const mapCanvas = document.querySelector('.map__canvas');
 const templateCard = document.querySelector('#card')
   .content
   .querySelector('.popup');
