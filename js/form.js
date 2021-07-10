@@ -1,3 +1,6 @@
+import {sendData} from './api.js';
+import {mainPinMarker, LAT, LNG} from './map.js';
+
 const noticeForm = document.querySelector('.notice');
 const adForm = noticeForm.querySelector('.ad-form');
 const fieldsetForm = adForm.querySelectorAll('fieldset');
@@ -9,6 +12,7 @@ const roomNumber = document.querySelector('#room_number');
 const guestNumber = document.querySelector('#capacity');
 const checkIn = document.querySelector('#timein');
 const checkOut = document.querySelector('#timeout');
+const body = document.querySelector('body');
 
 const MIN_NAME_LENGTH = 30;
 const MAX_NAME_LENGTH = 100;
@@ -68,16 +72,19 @@ titleForm.addEventListener('input', () => {
   }
   titleForm.reportValidity();
 });
-
 const defaultOptions = [...guestNumber.options];
-roomNumber.addEventListener('change', function () {
-  const selectedOption = this.options[this.selectedIndex];
+const getChangeParametrs = (value = 1) => {
   guestNumber.innerHTML = '';
-  if (+selectedOption.value === 100) {
+  if (+value === 100) {
     guestNumber.append(defaultOptions[3]);
   } else {
-    guestNumber.append(...defaultOptions.filter((option) => option.value <= selectedOption.value & option.value > 0));
+    guestNumber.append(...defaultOptions.filter((option) => option.value <= value & option.value > 0));
   }
+};
+getChangeParametrs();
+roomNumber.addEventListener('change', function () {
+  const selectedOption = this.options[this.selectedIndex];
+  getChangeParametrs(selectedOption.value);
 });
 
 guestNumber.addEventListener('change', (event) => {
@@ -113,5 +120,77 @@ checkIn.addEventListener('change', () => {
 checkOut.addEventListener('change', () => {
   makeSameValue(checkIn, checkOut);
 });
+
+const isEscEvent = (evt) => evt.key === 'Escape' || evt.key === 'Esc';
+
+const templateSuccess = document.querySelector('#success')
+  .content
+  .querySelector('.success');
+
+const successMessage = () => {
+  const elementCards = templateSuccess.cloneNode(true);
+  body.insertBefore(elementCards, null);
+
+  document.addEventListener('click', () => {
+    elementCards.remove();
+  });
+
+  document.addEventListener('keydown', () => {
+    if (isEscEvent) {
+      elementCards.remove();
+    }
+  });
+};
+
+const resetFunction = () => {
+  adForm.reset();
+  adForm.addEventListener('reset', () => {
+    mainPinMarker.setLatLng({lat: LAT, lng: LNG});
+  });
+};
+
+const resetButtonAdForm = adForm.querySelector('.ad-form__reset');
+resetButtonAdForm.addEventListener('click', () => {
+  resetFunction();
+});
+
+const templateError = document.querySelector('#error')
+  .content
+  .querySelector('.error');
+
+const errorMessage = () => {
+  const elementCards = templateError.cloneNode(true);
+  body.insertBefore(elementCards, null);
+  const errorButton = elementCards.querySelector('.error__button');
+
+  errorButton.addEventListener('click', () => {
+    elementCards.remove();
+  });
+
+  document.addEventListener('keydown', () => {
+    if (isEscEvent) {
+      elementCards.remove();
+    }
+  });
+
+  document.addEventListener('click', () => {
+    elementCards.remove();
+  });
+
+};
+
+const setUserFormSubmit = (onSuccess, onFail) => {
+  adForm.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+
+    sendData(
+      () => onSuccess(resetFunction()),
+      () => onFail(),
+      new FormData(adForm),
+    );
+  });
+};
+
+setUserFormSubmit(successMessage, errorMessage);
 
 export {makeActiveForm};
