@@ -72,17 +72,19 @@ titleForm.addEventListener('input', () => {
   }
   titleForm.reportValidity();
 });
-
 const defaultOptions = [...guestNumber.options];
-
-roomNumber.addEventListener('change', function () {
-  const selectedOption = this.options[this.selectedIndex];
+const getChangeParametrs = (value = 1) => {
   guestNumber.innerHTML = '';
-  if (+selectedOption.value === 100) {
+  if (+value === 100) {
     guestNumber.append(defaultOptions[3]);
   } else {
-    guestNumber.append(...defaultOptions.filter((option) => option.value <= selectedOption.value & option.value > 0));
+    guestNumber.append(...defaultOptions.filter((option) => option.value <= value & option.value > 0));
   }
+};
+getChangeParametrs();
+roomNumber.addEventListener('change', function () {
+  const selectedOption = this.options[this.selectedIndex];
+  getChangeParametrs(selectedOption.value);
 });
 
 guestNumber.addEventListener('change', (event) => {
