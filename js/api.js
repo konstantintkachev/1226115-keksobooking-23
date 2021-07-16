@@ -16,7 +16,7 @@ const getData = (onSuccess) => {
       onSuccess(adverts);
     })
     .catch(() => {
-      showAlert('Ошибка подключения! Попробуйте ещsе раз.');
+      showAlert('Ошибка подключения! Попробуйте ещё раз.');
     });
 };
 
