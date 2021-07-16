@@ -1,9 +1,25 @@
-import {similarArr, FEATURES, PHOTOS} from './data.js';
+import {
+  similarArr,
+  // FEATURES,
+  PHOTOS
+} from './data.js';
 const templateCard = document.querySelector('#card')
   .content
   .querySelector('.popup');
 
 const renderCards = similarArr;
+
+const insertFeatures = function (element, array) {
+  element.innerHTML = '';
+
+  if (array) {
+    array.forEach((item) => {
+      const featureItem = document.createElement('li');
+      featureItem.classList.add('popup__feature', `popup__feature--${item}`);
+      element.appendChild(featureItem);
+    });
+  }
+};
 
 const createCards = (element) => {
   const elementCards = templateCard.cloneNode(true);
@@ -40,15 +56,7 @@ const createCards = (element) => {
     popupTime.remove();
   }
 
-  const popupFeatures = elementCards.querySelector('.popup__features');
-  const modifiers = FEATURES.map((feature) => `popup__feature--${feature}`);
-  const featureListElement = popupFeatures.querySelectorAll('.popup__features');
-  featureListElement.forEach((item) => {
-    const modifier = item.classList[1];
-    if (!modifiers.includes(modifier)) {
-      item.remove();
-    }
-  });
+  insertFeatures(elementCards.querySelector('.popup__features'), element.offer.features);
 
   const popupDescription = elementCards.querySelector('.popup__description');
   popupDescription.textContent = element.offer.description;
@@ -73,4 +81,7 @@ const createCards = (element) => {
   return elementCards;
 };
 
-export {renderCards, createCards};
+export {
+  renderCards,
+  createCards
+};
