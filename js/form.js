@@ -1,5 +1,11 @@
-import {sendData} from './api.js';
-import {mainPinMarker, LAT, LNG} from './map.js';
+import {
+  sendData
+} from './api.js';
+import {
+  mainPinMarker,
+  LAT,
+  LNG
+} from './map.js';
 
 const noticeForm = document.querySelector('.notice');
 const adForm = noticeForm.querySelector('.ad-form');
@@ -39,9 +45,8 @@ typeForm.addEventListener('change', (evt) => {
 });
 
 const addDisabled = (element, bool) => {
-  // eslint-disable-next-line id-length
-  for (let i = 0; i < element.length; i++) {
-    element[i].disabled = bool;
+  for (let item = 0; item < element.length; item++) {
+    element[item].disabled = bool;
   }
 };
 
@@ -145,7 +150,10 @@ const successMessage = () => {
 const resetFunction = () => {
   adForm.reset();
   adForm.addEventListener('reset', () => {
-    mainPinMarker.setLatLng({lat: LAT, lng: LNG});
+    mainPinMarker.setLatLng({
+      lat: LAT,
+      lng: LNG,
+    });
   });
 };
 
@@ -193,4 +201,6 @@ const setUserFormSubmit = (onSuccess, onFail) => {
 
 setUserFormSubmit(successMessage, errorMessage);
 
-export {makeActiveForm};
+export {
+  makeActiveForm
+};
