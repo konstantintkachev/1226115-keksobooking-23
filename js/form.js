@@ -7,6 +7,11 @@ import {
   LNG
 } from './map.js';
 
+import {
+  previewAvatar,
+  previewFlatPhoto
+} from './avatar.js';
+
 const noticeForm = document.querySelector('.notice');
 const adForm = noticeForm.querySelector('.ad-form');
 const fieldsetForm = adForm.querySelectorAll('fieldset');
@@ -19,6 +24,12 @@ const guestNumber = document.querySelector('#capacity');
 const checkIn = document.querySelector('#timein');
 const checkOut = document.querySelector('#timeout');
 const body = document.querySelector('body');
+const defaultOptions = [...guestNumber.options];
+const resetButtonAdForm = adForm.querySelector('.ad-form__reset');
+const titleForm = adForm.querySelector('#title');
+const templateError = document.querySelector('#error')
+  .content
+  .querySelector('.error');
 
 const MIN_NAME_LENGTH = 30;
 const MAX_NAME_LENGTH = 100;
@@ -65,7 +76,6 @@ const makeActiveForm = () => {
   addDisabled(selectForm, false);
 };
 
-const titleForm = adForm.querySelector('#title');
 titleForm.addEventListener('input', () => {
   const valueLength = titleForm.value.length;
   if (valueLength < MIN_NAME_LENGTH) {
@@ -77,7 +87,7 @@ titleForm.addEventListener('input', () => {
   }
   titleForm.reportValidity();
 });
-const defaultOptions = [...guestNumber.options];
+
 const getChangeParametrs = (value = 1) => {
   guestNumber.innerHTML = '';
   if (+value === 100) {
@@ -147,8 +157,11 @@ const successMessage = () => {
   });
 };
 
-const resetFunction = () => {
+const reset = () => {
   adForm.reset();
+  previewAvatar.src = 'img/muffin-grey.svg';
+  const newChild = previewFlatPhoto.querySelector('.ad-form__photo img');
+  if (previewFlatPhoto.childNodes.length > 0) { previewFlatPhoto.removeChild(newChild); }
   adForm.addEventListener('reset', () => {
     mainPinMarker.setLatLng({
       lat: LAT,
@@ -157,14 +170,9 @@ const resetFunction = () => {
   });
 };
 
-const resetButtonAdForm = adForm.querySelector('.ad-form__reset');
 resetButtonAdForm.addEventListener('click', () => {
-  resetFunction();
+  reset();
 });
-
-const templateError = document.querySelector('#error')
-  .content
-  .querySelector('.error');
 
 const errorMessage = () => {
   const elementCards = templateError.cloneNode(true);
@@ -192,7 +200,7 @@ const setUserFormSubmit = (onSuccess, onFail) => {
     evt.preventDefault();
 
     sendData(
-      () => onSuccess(resetFunction()),
+      () => onSuccess(reset()),
       () => onFail(),
       new FormData(adForm),
     );

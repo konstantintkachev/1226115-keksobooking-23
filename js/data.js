@@ -57,6 +57,5 @@ const similarArr = new Array(CREATE_DATA).fill('').map(() => createRandomValues(
 
 export {
   similarArr,
-  FEATURES,
-  PHOTOS
+  FEATURES
 };

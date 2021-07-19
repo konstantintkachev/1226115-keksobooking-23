@@ -1,36 +1,17 @@
-import {
-  similarArr,
-  // FEATURES,
-  PHOTOS
-} from './data.js';
 const templateCard = document.querySelector('#card')
   .content
   .querySelector('.popup');
 
-const renderCards = similarArr;
-
-const insertFeatures = function (element, array) {
-  element.innerHTML = '';
-
-  if (array) {
-    array.forEach((item) => {
-      const featureItem = document.createElement('li');
-      featureItem.classList.add('popup__feature', `popup__feature--${item}`);
-      element.appendChild(featureItem);
-    });
-  }
-};
-
 const createCards = (element) => {
+
   const elementCards = templateCard.cloneNode(true);
   const popupTitle = elementCards.querySelector('.popup__title').textContent = element.offer.title;
   if (!element.offer.title) {
     popupTitle.remove();
   }
-
   const popupAddress = elementCards.querySelector('.popup__text--address');
-  popupAddress.textContent = `${element.offer.address.lat} это lat ${element.offer.address.lng} это lng`;
-  if (!element.offer.address.lat || !element.offer.address.lng) {
+  popupAddress.textContent = element.offer.address;
+  if (!element.offer.address) {
     popupAddress.remove();
   }
 
@@ -56,7 +37,22 @@ const createCards = (element) => {
     popupTime.remove();
   }
 
-  insertFeatures(elementCards.querySelector('.popup__features'), element.offer.features);
+  const featuresPopup = elementCards.querySelector('.popup__features');
+  featuresPopup.innerHTML = '';
+  const featuresArray = [];
+  const featureElement = element.offer.features;
+  const addfeaturesArray = featuresArray.push(featureElement);
+
+  for (let item = 0; item <= addfeaturesArray.length - 1; item++) {
+    const ad = addfeaturesArray[item];
+    const newElement = document.createElement('li');
+    newElement.classList.add('popup__feature', `popup__feature--${ad}`);
+    featuresPopup.append(newElement);
+  }
+
+  if (!element.offer.features) {
+    featuresPopup.remove();
+  }
 
   const popupDescription = elementCards.querySelector('.popup__description');
   popupDescription.textContent = element.offer.description;
@@ -64,13 +60,24 @@ const createCards = (element) => {
     popupDescription.remove();
   }
 
-  const popupPhotos = elementCards.querySelector('.popup__photos');
-  popupPhotos.innerHTML = '';
-  PHOTOS.forEach((item) => {
-    popupPhotos.innerHTML += `<img src="${item}" class="popup__photo" width="45" height="40" alt="Фотография жилья">`;
-  });
+  const photosPopup = elementCards.querySelector('.popup__photos');
+  const photoPopup = elementCards.querySelector('.popup__photo');
+
+  const insertPhoto = (el, array) => {
+    el.innerHTML = '';
+    if(array){
+      array.forEach((item) => {
+        const adPhoto = photoPopup.cloneNode(true);
+        adPhoto.src = item;
+        el.appendChild(adPhoto);
+      });
+    }
+  };
+
+  insertPhoto(photosPopup, element.offer.photos);
+
   if (!element.offer.photos) {
-    popupPhotos.remove();
+    photosPopup.remove();
   }
 
   const popupAvatar = elementCards.querySelector('.popup__avatar');
@@ -82,6 +89,5 @@ const createCards = (element) => {
 };
 
 export {
-  renderCards,
   createCards
 };

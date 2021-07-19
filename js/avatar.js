@@ -41,3 +41,5 @@ flatPhoto.addEventListener('change', () => {
     reader.readAsDataURL(file);
   }
 });
+
+export {previewAvatar, previewFlatPhoto};
