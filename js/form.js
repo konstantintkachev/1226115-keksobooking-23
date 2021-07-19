@@ -1,5 +1,16 @@
-import {sendData} from './api.js';
-import {mainPinMarker, LAT, LNG} from './map.js';
+import {
+  sendData
+} from './api.js';
+import {
+  mainPinMarker,
+  LAT,
+  LNG
+} from './map.js';
+
+import {
+  previewAvatar,
+  previewFlatPhoto
+} from './avatar.js';
 
 const noticeForm = document.querySelector('.notice');
 const adForm = noticeForm.querySelector('.ad-form');
@@ -13,6 +24,12 @@ const guestNumber = document.querySelector('#capacity');
 const checkIn = document.querySelector('#timein');
 const checkOut = document.querySelector('#timeout');
 const body = document.querySelector('body');
+const defaultOptions = [...guestNumber.options];
+const resetButtonAdForm = adForm.querySelector('.ad-form__reset');
+const titleForm = adForm.querySelector('#title');
+const templateError = document.querySelector('#error')
+  .content
+  .querySelector('.error');
 
 const MIN_NAME_LENGTH = 30;
 const MAX_NAME_LENGTH = 100;
@@ -39,9 +56,8 @@ typeForm.addEventListener('change', (evt) => {
 });
 
 const addDisabled = (element, bool) => {
-  // eslint-disable-next-line id-length
-  for (let i = 0; i < element.length; i++) {
-    element[i].disabled = bool;
+  for (let item = 0; item < element.length; item++) {
+    element[item].disabled = bool;
   }
 };
 
@@ -60,7 +76,6 @@ const makeActiveForm = () => {
   addDisabled(selectForm, false);
 };
 
-const titleForm = adForm.querySelector('#title');
 titleForm.addEventListener('input', () => {
   const valueLength = titleForm.value.length;
   if (valueLength < MIN_NAME_LENGTH) {
@@ -72,7 +87,7 @@ titleForm.addEventListener('input', () => {
   }
   titleForm.reportValidity();
 });
-const defaultOptions = [...guestNumber.options];
+
 const getChangeParametrs = (value = 1) => {
   guestNumber.innerHTML = '';
   if (+value === 100) {
@@ -142,21 +157,22 @@ const successMessage = () => {
   });
 };
 
-const resetFunction = () => {
+const reset = () => {
   adForm.reset();
+  previewAvatar.src = 'img/muffin-grey.svg';
+  const newChild = previewFlatPhoto.querySelector('.ad-form__photo img');
+  if (previewFlatPhoto.childNodes.length > 0) { previewFlatPhoto.removeChild(newChild); }
   adForm.addEventListener('reset', () => {
-    mainPinMarker.setLatLng({lat: LAT, lng: LNG});
+    mainPinMarker.setLatLng({
+      lat: LAT,
+      lng: LNG,
+    });
   });
 };
 
-const resetButtonAdForm = adForm.querySelector('.ad-form__reset');
 resetButtonAdForm.addEventListener('click', () => {
-  resetFunction();
+  reset();
 });
-
-const templateError = document.querySelector('#error')
-  .content
-  .querySelector('.error');
 
 const errorMessage = () => {
   const elementCards = templateError.cloneNode(true);
@@ -184,7 +200,7 @@ const setUserFormSubmit = (onSuccess, onFail) => {
     evt.preventDefault();
 
     sendData(
-      () => onSuccess(resetFunction()),
+      () => onSuccess(reset()),
       () => onFail(),
       new FormData(adForm),
     );
@@ -193,4 +209,6 @@ const setUserFormSubmit = (onSuccess, onFail) => {
 
 setUserFormSubmit(successMessage, errorMessage);
 
-export {makeActiveForm};
+export {
+  makeActiveForm
+};

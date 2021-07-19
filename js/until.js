@@ -18,8 +18,7 @@ const getRandomLocation = (min, max, number) => {
 
 const getRandomArrayElement = (elements) => elements[getRandomNumber(0, elements.length - 1)];
 
-// eslint-disable-next-line id-length
-const getNumber = (n) => (n < 10) ? (`0${n}`) : n;
+const getNumber = (number) => (number < 10) ? (`0${number}`) : number;
 
 const showAlert = (message) => {
   const alertContainer = document.createElement('div');

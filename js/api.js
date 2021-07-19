@@ -1,4 +1,6 @@
-import {showAlert} from './until.js';
+import {
+  showAlert
+} from './until.js';
 
 const GET_URL = 'https://23.javascript.pages.academy/keksobooking/data';
 const SEND_URL = 'https://23.javascript.pages.academy/keksobooking';
@@ -6,7 +8,7 @@ const SEND_URL = 'https://23.javascript.pages.academy/keksobooking';
 const getData = (onSuccess) => {
   fetch(GET_URL)
     .then((response) => {
-      if(response.ok) {
+      if (response.ok) {
         return response.json();
       }
     })
@@ -14,19 +16,17 @@ const getData = (onSuccess) => {
       onSuccess(adverts);
     })
     .catch(() => {
-      showAlert('Ошибка подключения! Попробуйте еще раз.');
+      showAlert('Ошибка подключения! Попробуйте ещё раз.');
     });
 };
 
 const sendData = (onSuccess, onFail, body) => {
-  fetch(SEND_URL,
-    {
-      method: 'POST',
-      body,
-    },
-  )
+  fetch(SEND_URL, {
+    method: 'POST',
+    body,
+  })
     .then((response) => {
-      if(response.ok) {
+      if (response.ok) {
         onSuccess();
       } else {
         onFail('Не удалось отправить форму. Попробуйте ещё раз');
@@ -37,4 +37,8 @@ const sendData = (onSuccess, onFail, body) => {
     });
 };
 
-export {getData, sendData};
+export {
+  getData,
+  sendData,
+  GET_URL
+};
