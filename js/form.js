@@ -4,13 +4,33 @@ import {
 import {
   mainPinMarker,
   LAT,
-  LNG
+  LNG,
+  map,
+  resetMarkerPosition,
+  startRendering
 } from './map.js';
 
 import {
   previewAvatar,
   previewFlatPhoto
 } from './avatar.js';
+
+const numberOfRooms = {
+  1: ['1'],
+  2: ['2', '1'],
+  3: ['3', '2', '1'],
+  100: ['0'],
+};
+
+const typeMinPrice = {
+  'bungalow': 0,
+  'flat': 1000,
+  'hotel': 3000,
+  'house': 5000,
+  'palace': 10000,
+};
+const MIN_NAME_LENGTH = 30;
+const MAX_NAME_LENGTH = 100;
 
 const noticeForm = document.querySelector('.notice');
 const adForm = noticeForm.querySelector('.ad-form');
@@ -31,26 +51,7 @@ const templateError = document.querySelector('#error')
   .content
   .querySelector('.error');
 
-const MIN_NAME_LENGTH = 30;
-const MAX_NAME_LENGTH = 100;
-
-const numberOfRooms = {
-  1: ['1'],
-  2: ['2', '1'],
-  3: ['3', '2', '1'],
-  100: ['0'],
-};
-
-const typeMinPrice = {
-  'bungalow': 0,
-  'flat': 1000,
-  'hotel': 3000,
-  'house': 5000,
-  'palace': 10000,
-};
-
-typeForm.addEventListener('change', (evt) => {
-  evt.target.value === typeForm.value;
+typeForm.addEventListener('change', () => {
   priceForm.placeholder = typeMinPrice[typeForm.value];
   priceForm.min = typeMinPrice[typeForm.value];
 });
@@ -97,6 +98,7 @@ const getChangeParametrs = (value = 1) => {
   }
 };
 getChangeParametrs();
+
 roomNumber.addEventListener('change', function () {
   const selectedOption = this.options[this.selectedIndex];
   getChangeParametrs(selectedOption.value);
@@ -124,7 +126,7 @@ roomNumber.addEventListener('change', (event) => {
   roomNumber.reportValidity();
 });
 
-const makeSameValue = function (first, second) {
+const makeSameValue = (first, second) => {
   first.value = second.value;
 };
 
@@ -142,7 +144,7 @@ const templateSuccess = document.querySelector('#success')
   .content
   .querySelector('.success');
 
-const successMessage = () => {
+const getSuccessMessage = () => {
   const elementCards = templateSuccess.cloneNode(true);
   body.insertBefore(elementCards, null);
 
@@ -159,6 +161,10 @@ const successMessage = () => {
 
 const reset = () => {
   adForm.reset();
+  map.closePopup();
+  mapFiltersForm.reset();
+  resetMarkerPosition();
+  startRendering();
   previewAvatar.src = 'img/muffin-grey.svg';
   const newChild = previewFlatPhoto.querySelector('.ad-form__photo img');
   if (previewFlatPhoto.childNodes.length > 0) { previewFlatPhoto.removeChild(newChild); }
@@ -207,7 +213,7 @@ const setUserFormSubmit = (onSuccess, onFail) => {
   });
 };
 
-setUserFormSubmit(successMessage, errorMessage);
+setUserFormSubmit(getSuccessMessage, errorMessage);
 
 export {
   makeActiveForm

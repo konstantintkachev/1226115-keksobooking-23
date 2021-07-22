@@ -11,12 +11,28 @@ import {
   createFilterAddData
 } from './filter.js';
 
-const mapFilters = document.querySelector('.map__filters');
-const LAT = 35.660940;
-const LNG = 139.778745;
-const address = document.querySelector('#address');
 const SIMILAR_ADVERTS_COUNT = 10;
 const RERENDER_DELAY = 500;
+const ZOOM = 12;
+const LAT = 35.660940;
+const LNG = 139.778745;
+const COMMA_NUMBER = 5;
+
+const MAIN_ICON_DATA = {
+  iconUrl: 'img/main-pin.svg',
+  iconSize: [52, 52],
+  iconAnchor: [52, 26],
+};
+
+const USAUAL_ICON_DATA = {
+  iconUrl: 'img/pin.svg',
+  iconSize: [40, 40],
+  iconAnchor: [40, 20],
+};
+
+const mapFilters = document.querySelector('.map__filters');
+const address = document.querySelector('#address');
+
 
 const map = L.map('map-canvas')
   .on('load', () => {
@@ -25,7 +41,7 @@ const map = L.map('map-canvas')
   .setView({
     lat: LAT,
     lng: LNG,
-  }, 12);
+  }, ZOOM);
 
 L.tileLayer(
   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -34,9 +50,9 @@ L.tileLayer(
 ).addTo(map);
 
 const mainPinIcon = L.icon({
-  iconUrl: '../img/main-pin.svg',
-  iconSize: [52, 52],
-  iconAnchor: [52, 26],
+  iconUrl: MAIN_ICON_DATA.iconUrl,
+  iconSize: MAIN_ICON_DATA.iconSize,
+  iconAnchor: MAIN_ICON_DATA.iconAnchor,
 });
 const mainPinMarker = L.marker({
   lat: LAT,
@@ -59,9 +75,9 @@ const renderSimilarList = (ads) => {
     .forEach((offer) => {
 
       const iconUsual = L.icon({
-        iconUrl: '../img/pin.svg',
-        iconSize: [40, 40],
-        iconAnchor: [40, 20],
+        iconUrl: USAUAL_ICON_DATA.iconUrl,
+        iconSize: USAUAL_ICON_DATA.iconSize,
+        iconAnchor: USAUAL_ICON_DATA.iconAnchor,
       });
 
       const markerFilter = L.marker({
@@ -80,21 +96,33 @@ const renderSimilarList = (ads) => {
     });
 };
 
-getData((adverts) => {
+const startRendering = () => {
+  getData((adverts) => {
+    const copyData = adverts;
+    renderSimilarList(copyData.slice(0, SIMILAR_ADVERTS_COUNT));
+    mapFilters.addEventListener('change', (_.debounce(() => {
+      pins.clearLayers();
+      renderSimilarList(createFilterAddData(copyData));
+    }, RERENDER_DELAY)));
+  });
+};
 
-  const copyData = adverts.slice(0, SIMILAR_ADVERTS_COUNT);
-  renderSimilarList(copyData);
+startRendering();
 
-  mapFilters.addEventListener('change', (_.debounce(() => {
-    pins.clearLayers();
-    renderSimilarList(createFilterAddData(copyData));
-  }, RERENDER_DELAY)));
-});
+address.value = `${map._lastCenter.lat} , ${map._lastCenter.lng}`;
+
+const resetMarkerPosition = () => {
+  map.setView([LAT, LNG], ZOOM);
+  map.closePopup();
+  pins.clearLayers();
+  mainPinMarker.setLatLng({ lat: LAT, lng: LNG });
+  address.value = `${LAT}, ${LNG}`;
+};
 
 mainPinMarker.on('moveend', (evt) => {
   const mooveMarket = evt.target.getLatLng();
-  const lat = mooveMarket.lat.toFixed(5);
-  const lng = mooveMarket.lng.toFixed(5);
+  const lat = mooveMarket.lat.toFixed(COMMA_NUMBER);
+  const lng = mooveMarket.lng.toFixed(COMMA_NUMBER);
   address.value = `${lat}, ${lng}`;
 });
 
@@ -102,5 +130,7 @@ export {
   mainPinMarker,
   LAT,
   LNG,
-  pins
+  map,
+  resetMarkerPosition,
+  startRendering
 };

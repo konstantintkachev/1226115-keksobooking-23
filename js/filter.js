@@ -40,12 +40,13 @@ const createFeaturesArray = () => {
 
 const checkFilterGuests = (advert) => housingGuests.value === ANY || advert.offer.guests === Number(housingGuests.value);
 const checkFilterRooms = (advert) => housingRooms.value === ANY || advert.offer.rooms === Number(housingRooms.value);
-const checkFilterPrice = (advert) => PRICE_VALUES[housingPrice.value].min < advert.offer.price && PRICE_VALUES[housingPrice.value].max > advert.offer.price;
+const checkFilterPrice = (advert) => Number(PRICE_VALUES[housingPrice.value].min) < advert.offer.price && Number(PRICE_VALUES[housingPrice.value].max) > advert.offer.price;
 const checkFilterType = (advert) => housingType.value === ANY || advert.offer.type === housingType.value;
 
 const checkFiltersFeature = (advert) => {
   const checkedList = createFeaturesArray();
-  return advert.offer.features && checkedList.every((checkFeature) => advert.offer.features.includes(checkFeature));
+  const featureArray = advert.offer.features || [];
+  return featureArray && checkedList.every((checkFeature) => featureArray.includes(checkFeature));
 };
 
 const createFilterAddData = (adverts) => {

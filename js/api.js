@@ -1,6 +1,6 @@
 import {
   showAlert
-} from './until.js';
+} from './popup.js';
 
 const GET_URL = 'https://23.javascript.pages.academy/keksobooking/data';
 const SEND_URL = 'https://23.javascript.pages.academy/keksobooking';
