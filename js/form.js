@@ -99,8 +99,8 @@ const getChangeParametrs = (value = 1) => {
 };
 getChangeParametrs();
 
-roomNumber.addEventListener('change', function () {
-  const selectedOption = this.options[this.selectedIndex];
+roomNumber.addEventListener('change', (evt) => {
+  const selectedOption = evt.target.options[evt.target.selectedIndex];
   getChangeParametrs(selectedOption.value);
 });
 
@@ -159,7 +159,7 @@ const getSuccessMessage = () => {
   });
 };
 
-const reset = () => {
+const resetForm = () => {
   adForm.reset();
   map.closePopup();
   mapFiltersForm.reset();
@@ -177,10 +177,10 @@ const reset = () => {
 };
 
 resetButtonAdForm.addEventListener('click', () => {
-  reset();
+  resetForm();
 });
 
-const errorMessage = () => {
+const getErrorMessage = () => {
   const elementCards = templateError.cloneNode(true);
   body.insertBefore(elementCards, null);
   const errorButton = elementCards.querySelector('.error__button');
@@ -206,14 +206,14 @@ const setUserFormSubmit = (onSuccess, onFail) => {
     evt.preventDefault();
 
     sendData(
-      () => onSuccess(reset()),
+      () => onSuccess(resetForm()),
       () => onFail(),
       new FormData(adForm),
     );
   });
 };
 
-setUserFormSubmit(getSuccessMessage, errorMessage);
+setUserFormSubmit(getSuccessMessage, getErrorMessage);
 
 export {
   makeActiveForm
